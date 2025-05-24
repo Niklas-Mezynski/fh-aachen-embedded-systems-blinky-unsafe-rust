@@ -8,10 +8,6 @@ cortex-m = "0.7"
 cortex-m-rt = "0.7"
 panic-halt = "0.2"
 
-# [[bin]]
-# name = "main"
-# test = false
-# bench = false
 
 [profile.release]
 debug = 2

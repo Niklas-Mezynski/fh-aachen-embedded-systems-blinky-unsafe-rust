@@ -21,26 +21,26 @@ const LED_BLUE: u32 = 1 << 15;
 const ALL_LEDS: u32 = LED_GREEN | LED_ORANGE | LED_RED | LED_BLUE;
 
 /// Unsafe helper to read from a memory-mapped register
-unsafe fn read_reg(base: u32, offset: u32) -> u32 {
+unsafe fn read_reg(base: u32, offset: u32) -> u32 { unsafe {
     let addr = (base + offset) as *const u32;
     addr.read_volatile()
-}
+}}
 
 /// Unsafe helper to write to a memory-mapped register
-unsafe fn write_reg(base: u32, offset: u32, value: u32) {
+unsafe fn write_reg(base: u32, offset: u32, value: u32) { unsafe {
     let addr = (base + offset) as *mut u32;
     addr.write_volatile(value);
-}
+}}
 
 /// Unsafe helper to modify a register (read-modify-write)
 unsafe fn modify_reg<F>(base: u32, offset: u32, f: F)
 where
     F: FnOnce(u32) -> u32,
-{
+{ unsafe {
     let current = read_reg(base, offset);
     let new_value = f(current);
     write_reg(base, offset, new_value);
-}
+}}
 
 /// Safe wrapper to enable GPIO D clock
 fn enable_gpiod_clock() {
